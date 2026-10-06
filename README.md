@@ -1,4 +1,6 @@
-# ConfigPair · 知华参数组合测试与覆盖复核
+[中文](README.md) | [English](README.en.md)
+
+# ConfigPair · 知华参数组合测试与覆盖复核系统
 
 ![知华科技 LOGO](frontend/public/brand/logo.jpg)
 
@@ -6,7 +8,7 @@
 
 **公开源码学习版／非商业源码版 · 0.1.0**。自有源码适用 [ZhuaTech Non-Commercial Source License 1.0](LICENSE)，未经书面授权不得商用。公开可读源码不等于 OSI 开源许可；第三方版权及许可独立保留。
 
-## 从配置空间到可核对的测试事实
+## 项目简介与适用场景：从配置空间到测试事实
 
 浏览器、认证方式、界面语言和终端等离散参数相互组合，会迅速增加兼容性用例。ConfigPair面向测试设计、研发验证和质量复核的学习与非商业流程研究：显式维护候选值和禁配规则，生成覆盖全部可达值对的确定性用例，再由指定人员登记人工结果、独立复核并封存。
 
@@ -79,12 +81,12 @@
 
 | 模型与业务 | 工作空间与管理 |
 |---|---|
-| ![登录页面](docs/screenshots/login.jpg) | ![计划列表](docs/screenshots/jobs.jpg) |
-| ![参数与禁配](docs/screenshots/model.jpg) | ![覆盖统计](docs/screenshots/dashboard.jpg) |
-| ![通过覆盖矩阵](docs/screenshots/matrix.jpg) | ![账号管理](docs/screenshots/users.jpg) |
-| ![逐例实际结果](docs/screenshots/cases.jpg) | ![角色权限](docs/screenshots/roles.jpg) |
-| ![版本与事实历史](docs/screenshots/history.jpg) | ![系统参数](docs/screenshots/settings.jpg) |
-| ![英文界面](docs/screenshots/english.jpg) | ![手机界面](docs/screenshots/mobile.jpg) |
+| ![登录页面](docs/screenshots/login.jpg)<br>**登录**：通过会话认证进入工作空间。 | ![计划列表](docs/screenshots/jobs.jpg)<br>**计划列表**：查询、筛选并进入权限范围内的测试计划。 |
+| ![参数与禁配](docs/screenshots/model.jpg)<br>**参数与禁配**：维护离散候选值和二元禁配规则。 | ![覆盖统计](docs/screenshots/dashboard.jpg)<br>**覆盖统计**：分别查看计划、执行和通过覆盖。 |
+| ![通过覆盖矩阵](docs/screenshots/matrix.jpg)<br>**覆盖矩阵**：切换参数轴和覆盖口径，区分不可达值对。 | ![账号管理](docs/screenshots/users.jpg)<br>**账号管理**：维护部门、岗位及账号启用状态。 |
+| ![逐例实际结果](docs/screenshots/cases.jpg)<br>**实际结果**：由指定执行人逐例登记通过、失败或阻塞。 | ![角色权限](docs/screenshots/roles.jpg)<br>**角色权限**：配置接口权限及数据范围。 |
+| ![版本与事实历史](docs/screenshots/history.jpg)<br>**版本历史**：查看生成快照和结果修订事实。 | ![系统参数](docs/screenshots/settings.jpg)<br>**系统参数**：维护允许调整的工作空间设置。 |
+| ![英文界面](docs/screenshots/english.jpg)<br>**英文界面**：查看英文操作页面。 | ![手机界面](docs/screenshots/mobile.jpg)<br>**手机界面**：在窄屏布局中查看和操作计划。 |
 
 ## 工程与数据
 
@@ -155,7 +157,9 @@ Vite的`/api`及`/actuator`代理到本机8080。宿主不安装Java／Maven时�
 
 ```bash
 cd backend
+export TEST_ADMIN_PASSWORD="$(python3 -c 'import secrets; print("Aa9" + secrets.token_urlsafe(24))')"
 mvn spotless:check test package
+unset TEST_ADMIN_PASSWORD
 cd ../frontend
 npm ci
 npm run format:check
@@ -169,6 +173,8 @@ git diff --check
 ```
 
 后端43项测试：26项HTTP/JPA业务、权限、撤权、幂等、并发、独立性与历史事实测试；17项算法测试，含80组固定种子模型的独立全枚举覆盖核对和20000配置上限场景。前端15项测试验证参数解析、可达值对索引、覆盖口径、岗位状态、API及CSRF。隔离MySQL验收覆盖7张计划、通过／失败／阻塞、退回、取消、历史、撤权、并发、CSV与独立覆盖复算，共1174项断言。
+
+`TEST_ADMIN_PASSWORD`仅供后端测试使用，临时随机生成，不是运行实例的管理员口令；不要写入源码或使用真实业务账号口令。
 
 ```bash
 # 仅在明确可丢弃、全新独立回环验收实例执行，会创建TEST账号与业务
@@ -206,3 +212,5 @@ python3 scripts/smoke.py --verify
 | ![微信 zhuatech](docs/images/wechat-zhuatech.png) | ![微信 zhuatech2](docs/images/wechat-zhuatech2.png) |
 
 官网：[知华科技](https://www.zhuatech.cn/) · 服务：商业授权、定制开发、部署与系统集成。
+
+商业授权或深度定制开发请联系知华科技。
